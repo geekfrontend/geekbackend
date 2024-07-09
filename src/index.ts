@@ -2,6 +2,9 @@ import express, { Application, Request, Response } from "express";
 import projectRoutes from "./routes/projectRoute";
 import skillRoutes from "./routes/skillRoute";
 import cors from "cors";
+import { config } from "dotenv";
+
+config();
 
 const app: Application = express();
 
