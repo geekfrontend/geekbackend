@@ -1,4 +1,4 @@
-import { prisma } from "../utils/prismaClient";
+import prisma from "../utils/prismaClient";
 import { Skill } from "@prisma/client";
 
 export const getSkills = async (): Promise<Skill[]> => {

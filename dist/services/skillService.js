@@ -8,27 +8,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateSkill = exports.deleteSkill = exports.createSkill = exports.getSkill = exports.getSkills = void 0;
-const prismaClient_1 = require("../utils/prismaClient");
+const prismaClient_1 = __importDefault(require("../utils/prismaClient"));
 const getSkills = () => __awaiter(void 0, void 0, void 0, function* () {
-    return yield prismaClient_1.prisma.skill.findMany();
+    return yield prismaClient_1.default.skill.findMany();
 });
 exports.getSkills = getSkills;
 const getSkill = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield prismaClient_1.prisma.skill.findFirst({ where: { id } });
+    return yield prismaClient_1.default.skill.findFirst({ where: { id } });
 });
 exports.getSkill = getSkill;
 const createSkill = (name) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield prismaClient_1.prisma.skill.create({ data: { name } });
+    return yield prismaClient_1.default.skill.create({ data: { name } });
 });
 exports.createSkill = createSkill;
 const deleteSkill = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    yield prismaClient_1.prisma.skill.delete({ where: { id } });
+    yield prismaClient_1.default.skill.delete({ where: { id } });
 });
 exports.deleteSkill = deleteSkill;
 const updateSkill = (id, name) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield prismaClient_1.prisma.skill.update({ where: { id }, data: { name } });
+    return yield prismaClient_1.default.skill.update({ where: { id }, data: { name } });
 });
 exports.updateSkill = updateSkill;
 //# sourceMappingURL=skillService.js.map
