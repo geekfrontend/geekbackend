@@ -1,8 +1,18 @@
 import prisma from "../utils/prismaClient";
 import { Skill } from "@prisma/client";
 
-export const getSkills = async (): Promise<Skill[]> => {
-  return await prisma.skill.findMany();
+export const getSkills = async (page: number, limit: number) => {
+  const offset = (page - 1) * limit;
+  const skills = await prisma.skill.findMany({
+    skip: offset,
+    take: limit,
+  });
+
+  const totalSkills = await prisma.skill.count();
+  return {
+    skills,
+    totalSkills,
+  };
 };
 
 export const getSkill = async (id: number): Promise<Skill> => {

@@ -14,8 +14,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateSkill = exports.deleteSkill = exports.createSkill = exports.getSkill = exports.getSkills = void 0;
 const prismaClient_1 = __importDefault(require("../utils/prismaClient"));
-const getSkills = () => __awaiter(void 0, void 0, void 0, function* () {
-    return yield prismaClient_1.default.skill.findMany();
+const getSkills = (page, limit) => __awaiter(void 0, void 0, void 0, function* () {
+    const offset = (page - 1) * limit;
+    const skills = yield prismaClient_1.default.skill.findMany({
+        skip: offset,
+        take: limit,
+    });
+    const totalSkills = yield prismaClient_1.default.skill.count();
+    return {
+        skills,
+        totalSkills,
+    };
 });
 exports.getSkills = getSkills;
 const getSkill = (id) => __awaiter(void 0, void 0, void 0, function* () {

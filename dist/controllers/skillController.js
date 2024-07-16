@@ -34,24 +34,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteSkill = exports.updateSkill = exports.createSkill = exports.getSkills = exports.getSkill = void 0;
 const skillService = __importStar(require("../services/skillService"));
+const response_1 = require("../utils/response");
 const getSkill = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
         const skill = yield skillService.getSkill(Number(id));
-        res.status(200).json(skill);
+        res
+            .status(200)
+            .json(new response_1.ApiResponse(200, "success", "Skill fetched successfully", skill));
     }
     catch (error) {
-        res.status(500).json({ error: "Failed to get skill" });
+        res
+            .status(500)
+            .json(new response_1.ApiResponse(500, "error", "Failed to get skill", {}));
     }
 });
 exports.getSkill = getSkill;
 const getSkills = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const skills = yield skillService.getSkills();
-        res.status(200).json(skills);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const { skills, totalSkills } = yield skillService.getSkills(page, limit);
+        const totalPages = Math.ceil(totalSkills / limit);
+        res.status(200).json(new response_1.ApiResponse(200, "success", "Skills fetched", {
+            skills,
+            page,
+            limit,
+            totalSkills,
+            totalPages,
+        }));
     }
     catch (error) {
-        res.status(500).json({ error: "Failed to get skills" });
+        res
+            .status(500)
+            .json(new response_1.ApiResponse(500, "error", "Failed to get skills", {}));
     }
 });
 exports.getSkills = getSkills;
@@ -59,10 +75,14 @@ const createSkill = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const { name } = req.body;
         const newSkill = yield skillService.createSkill(name);
-        res.status(201).json(newSkill);
+        res
+            .status(201)
+            .json(new response_1.ApiResponse(201, "success", "Skill created", newSkill));
     }
     catch (error) {
-        res.status(500).json({ error: "Failed to create skill" });
+        res
+            .status(500)
+            .json(new response_1.ApiResponse(500, "error", "Failed to create skill", {}));
     }
 });
 exports.createSkill = createSkill;
@@ -71,10 +91,14 @@ const updateSkill = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const { id } = req.params;
         const { name } = req.body;
         const newSkill = yield skillService.updateSkill(Number(id), name);
-        res.status(201).json(newSkill);
+        res
+            .status(201)
+            .json(new response_1.ApiResponse(201, "success", "Skill updated", newSkill));
     }
     catch (error) {
-        res.status(500).json({ error: "Failed to update skill" });
+        res
+            .status(500)
+            .json(new response_1.ApiResponse(500, "error", "Failed to update skill", {}));
     }
 });
 exports.updateSkill = updateSkill;
@@ -82,10 +106,12 @@ const deleteSkill = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const { id } = req.params;
         yield skillService.deleteSkill(Number(id));
-        res.status(200).json({ message: "Skill deleted successfully" });
+        res.status(200).json(new response_1.ApiResponse(200, "success", "Skill deleted", {}));
     }
     catch (error) {
-        res.status(500).json({ error: "Failed to delete skill" });
+        res
+            .status(500)
+            .json(new response_1.ApiResponse(500, "error", "Failed to delete skill", {}));
     }
 });
 exports.deleteSkill = deleteSkill;
